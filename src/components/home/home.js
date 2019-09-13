@@ -1,5 +1,6 @@
 import React from 'react';
 
+// landing page
 class Home extends React.Component {
 
   render() {
