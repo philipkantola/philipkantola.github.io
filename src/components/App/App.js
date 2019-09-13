@@ -5,6 +5,7 @@ import CitySearch from '../citySearch/citySearch';
 import CountrySearch from '../countrySearch/countrySearch';
 import CityPage from '../cityPage/cityPage';
 import CountryPage from '../countryPage/countryPage';
+import Loader from '../loader/loader';
 
 class App extends React.Component {
 
@@ -14,16 +15,19 @@ class App extends React.Component {
     city: undefined,
     country: undefined,
     population: undefined, 
-    error: undefined
+    error: undefined,
+    loading: false
   
   }
   
 // function to fetch information about desired city from API 
   getCity = async (e) => {
     e.preventDefault();
+    this.setState({ loading: true})
     const city = e.target.elements.city.value;
     const api_call = await fetch(`http://api.geonames.org/searchJSON?q=${city}&maxRows=10&username=weknowit`);
     const data = await api_call.json();
+    this.setState({ loading: false})
     this.setCurrentPage("cityPage");
     console.log(data)
     // if nothing is put into the form
@@ -61,6 +65,7 @@ setCurrentPage = (name) => {
 
 
   render() {
+    if (this.state.loading) return <Loader />;
     return(
       <div> 
         <h1> City Pop </h1>
