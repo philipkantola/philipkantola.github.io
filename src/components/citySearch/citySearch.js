@@ -5,8 +5,6 @@ import SearchBar from '../searchBar/searchBar';
 
 class CitySearch extends React.Component {
 
-
-
     render() {
       return (
         <div>

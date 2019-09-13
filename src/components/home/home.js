@@ -7,8 +7,8 @@ class Home extends React.Component {
 
     return (
       <div>
-        <input type='button' value="SEARCH BY CITY" onClick={this.props.onClickCityPage} />
-        <input type='button' value="SEARCH BY COUNTRY" onClick={this.props.onClickCountryPage} />
+        <input type='button' value="SEARCH BY CITY" onClick={() => this.props.onClickCitySearchBtn("citySearchPage")} />
+        <input type='button' value="SEARCH BY COUNTRY" onClick={() => this.props.onClickCountrySearchBtn("countrySearchPage")} />
       </div>
     );
   }
