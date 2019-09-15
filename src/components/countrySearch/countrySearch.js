@@ -9,7 +9,7 @@ class CountrySearch extends React.Component {
             <div>
                 <h2 align="center"> SEARCH BY COUNTRY </h2>
                 <SearchBar getContent={this.props.getCountry} searchObject={this.props.searchObject} />
-                {this.props.error && <p> {this.props.error} </p>}
+                {this.props.error && <p align="center"> {this.props.error} </p>}
             </div>
         );
     }

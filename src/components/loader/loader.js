@@ -2,9 +2,12 @@ import React from 'react';
 
 function Loader() {
   return (
-    <div className="loader center">
-      <i className="fa fa-cog fa-spin fa-2x" />
+    <div className = "modalWrapper">
+      <div className="loader">
+        <i className="fa fa-cog fa-spin fa-2x" />
+      </div>
     </div>
+    
   );
 }
 

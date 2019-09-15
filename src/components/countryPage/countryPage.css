@@ -1,26 +1,19 @@
 .cityBtn {
- 
-    margin-top: 5px;
-   
+    margin-top: 5px; 
 }
 
 .cityBtnGroup {
- 
-    text-align: center;
-        
-        
+    text-align: center; 
+    margin-top: 20px;    
 }
 
 Button {
-
     width:50%;
     display:block;
-
 }
 
 @media screen and (max-width: 500px) {
     Button {
-      width:100%;
-      
+      width:100%;    
     }
   }

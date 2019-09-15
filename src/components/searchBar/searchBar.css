@@ -11,12 +11,13 @@ input{
 
 .searchForm{
     width: 100%;
+    margin-top: 20px;
 }
 
 .searchBtn {
     background-color: transparent;
     border:0;
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
 .btn-wrap{

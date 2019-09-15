@@ -14,18 +14,18 @@ class App extends React.Component {
     country: undefined,
     population: undefined,
     error: undefined,
-    loading: false,
     topCities: []
   }
 
   // function to fetch information about desired city from API 
   fetchCity = async (e) => {
     e.preventDefault();
-    this.setState({ loading: true })
+    const temp = this.state.currentPage;
+    this.setCurrentPage("loading");
     const city = e.target.elements.city.value;
     const api_call = await fetch(`http://api.geonames.org/searchJSON?q=${city}&maxRows=10&username=weknowit`);
     const data = await api_call.json();
-    this.setState({ loading: false })
+    this.setCurrentPage(temp);
     console.log(data)
     // if no input is put into the form
     if (!city) {
@@ -57,12 +57,13 @@ class App extends React.Component {
   // function to fetch information about desired country from API 
   fetchCountry = async (e) => {
     e.preventDefault();
-    this.setState({ loading: true })
+    const temp = this.state.currentPage;
+    this.setCurrentPage("loading");
     const country = e.target.elements.country.value;
     // fetching top 3 cities over 1000 population from chosen country ordered by population
     const api_call = await fetch(`http://api.geonames.org/searchJSON?q=${country}&maxRows=3&cities=cities1000&orderby=population&username=weknowit`);
     const data = await api_call.json();
-    this.setState({ loading: false })
+    this.setCurrentPage(temp);
     // if no input is put into the form
     if (!country) {
       this.setState({ error: "Please type in a country to continue" })
@@ -77,7 +78,6 @@ class App extends React.Component {
       this.setState({})
       this.setState({
         ...this.state,
-        loading: false,
         topCities: [],
         error: "There exists no such country in our database, try again"
       })
@@ -103,12 +103,12 @@ class App extends React.Component {
 
 
   render() {
-    if (this.state.loading) return <Loader />;
     return (
       <div>
         <div className="wrapper">
           <div className="main">
             <h1 className="header1" align="center"> CityPop </h1>
+            {this.state.currentPage === "loading" && <Loader />}
             {this.state.currentPage === "home" && <Home onClickCitySearchBtn={this.setCurrentPage} onClickCountrySearchBtn={this.setCurrentPage} />}
             {this.state.currentPage === "citySearchPage" && <CitySearch getCity={this.fetchCity} error={this.state.error} searchObject="city" />}
             {this.state.currentPage === "countrySearchPage" && <CountrySearch getCountry={this.fetchCountry} error={this.state.error} searchObject="country" />}

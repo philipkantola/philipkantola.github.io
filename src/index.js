@@ -5,6 +5,7 @@ import "./components/home/home.css";
 import "./components/searchBar/searchBar.css";
 import "./components/cityPage/cityPage.css";
 import "./components/countryPage/countryPage.css";
+import "./components/loader/loader.css";
 import App from './components/App/App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
