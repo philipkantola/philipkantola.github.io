@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 // landing page
 class Home extends React.Component {
@@ -7,8 +8,12 @@ class Home extends React.Component {
 
     return (
       <div>
-        <input type='button' value="SEARCH BY CITY" onClick={() => this.props.onClickCitySearchBtn("citySearchPage")} />
-        <input type='button' value="SEARCH BY COUNTRY" onClick={() => this.props.onClickCountrySearchBtn("countrySearchPage")} />
+        <Button variant="primary" size="lg" onClick={() => this.props.onClickCitySearchBtn("citySearchPage")}>
+          SEARCH BY CITY
+          </Button>
+        <Button variant="primary" size="lg" onClick={() => this.props.onClickCountrySearchBtn("countrySearchPage")}>
+          SEARCH BY COUNTRY
+          </Button>
       </div>
     );
   }

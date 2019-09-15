@@ -9,7 +9,7 @@ class CitySearch extends React.Component {
       return (
         <div>
          <h2>SEARCH BY CITY</h2>
-         <SearchBar getCity = {this.props.getCity} />
+         <SearchBar getContent = {this.props.getCity} searchObject = {this.props.searchObject} />
          
          {this.props.error && <p> {this.props.error} </p>}
         </div>

@@ -16,7 +16,8 @@ class App extends React.Component {
     country: undefined,
     population: undefined, 
     error: undefined,
-    loading: false
+    loading: false,
+    topCities: []
   
   }
   
@@ -56,6 +57,21 @@ class App extends React.Component {
     }
   
   }
+// function to fetch information about desired country from API 
+  getCountry = async (e) => {
+    e.preventDefault();
+    this.setState({ loading: true})
+    const country = e.target.elements.country.value;
+    // fetching top 3 cities over 1000 population from chosen country ordered by population
+    const api_call = await fetch(`http://api.geonames.org/searchJSON?q=${country}&maxRows=3&cities=cities1000&orderby=population&username=weknowit`);
+    const data = await api_call.json();
+    this.setState({ loading: false})
+    this.setState({topCities: data.geonames});
+    this.setCurrentPage("countryPage");
+    console.log(data.geonames);
+  
+  }
+  
 
 setCurrentPage = (name) => {
   this.setState({
@@ -70,12 +86,15 @@ setCurrentPage = (name) => {
       <div> 
         <h1> City Pop </h1>
         {this.state.currentPage === "home" && <Home onClickCitySearchBtn ={this.setCurrentPage} onClickCountrySearchBtn = {this.setCurrentPage}/>}
-        {this.state.currentPage === "citySearchPage" && <CitySearch getCity = {this.getCity} error = {this.state.error} />}
-        {this.state.currentPage === "countrySearchPage" && <CountrySearch />}
+        {this.state.currentPage === "citySearchPage" && <CitySearch getCity = {this.getCity} error = {this.state.error} searchObject = "city" />}
+        {this.state.currentPage === "countrySearchPage" && <CountrySearch getCountry = {this.getCountry} searchObject = "country" />}
         {this.state.currentPage === "cityPage" && <CityPage 
           city = {this.state.city} 
           country = {this.state.country} 
           population = {this.state.population} 
+          error = {this.state.error} />}
+        {this.state.currentPage === "countryPage" && <CountryPage 
+          topCities = {this.state.topCities}
           error = {this.state.error} />}
       </div>
     );
