@@ -79,6 +79,17 @@ setCurrentPage = (name) => {
   })
 }
 
+setCityAndPage = (cityNumber) =>{
+  this.setState({
+    ...this.state,
+    city: this.state.topCities[cityNumber].name,
+    country: this.state.topCities[cityNumber].countryName,
+    population: this.state.topCities[cityNumber].population, 
+    error: undefined
+  })
+  this.setCurrentPage("cityPage");
+}
+
 
   render() {
     if (this.state.loading) return <Loader />;
@@ -95,7 +106,9 @@ setCurrentPage = (name) => {
           error = {this.state.error} />}
         {this.state.currentPage === "countryPage" && <CountryPage 
           topCities = {this.state.topCities}
-          error = {this.state.error} />}
+          error = {this.state.error}
+          setCity = {this.setCityAndPage}
+          />}
       </div>
     );
   }
