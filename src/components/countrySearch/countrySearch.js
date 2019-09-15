@@ -5,16 +5,15 @@ import SearchBar from '../searchBar/searchBar';
 class CountrySearch extends React.Component {
 
     render() {
-  
-      return (
-        <div>
-         SEARCH BY COUNTRY
-         <SearchBar getContent = {this.props.getCountry} searchObject = {this.props.searchObject} />
-         {this.props.error && <p> {this.props.error} </p>}
-        </div>
-      );
+        return (
+            <div>
+                <h2 align="center"> SEARCH BY COUNTRY </h2>
+                <SearchBar getContent={this.props.getCountry} searchObject={this.props.searchObject} />
+                {this.props.error && <p> {this.props.error} </p>}
+            </div>
+        );
     }
-  
-  }
-  
-  export default CountrySearch; 
+
+}
+
+export default CountrySearch; 

@@ -8,12 +8,15 @@ class Home extends React.Component {
 
     return (
       <div>
-        <Button variant="primary" size="lg" onClick={() => this.props.onClickCitySearchBtn("citySearchPage")}>
+        <div className="homeBtnGroup"> 
+        <Button className="homeBtn" variant="info" size="lg" onClick={() => this.props.onClickCitySearchBtn("citySearchPage")}>
           SEARCH BY CITY
           </Button>
-        <Button variant="primary" size="lg" onClick={() => this.props.onClickCountrySearchBtn("countrySearchPage")}>
+        <Button className="homeBtn" variant="info" size="lg" onClick={() => this.props.onClickCountrySearchBtn("countrySearchPage")}>
           SEARCH BY COUNTRY
           </Button>
+        </div>
+     
       </div>
     );
   }

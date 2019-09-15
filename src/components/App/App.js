@@ -8,34 +8,31 @@ import CountryPage from '../countryPage/countryPage';
 import Loader from '../loader/loader';
 
 class App extends React.Component {
-
- 
-  state = { 
+  state = {
     currentPage: "home",
     city: undefined,
     country: undefined,
-    population: undefined, 
+    population: undefined,
     error: undefined,
     loading: false,
     topCities: []
-  
   }
-  
-// function to fetch information about desired city from API 
+
+  // function to fetch information about desired city from API 
   fetchCity = async (e) => {
     e.preventDefault();
-    this.setState({ loading: true})
+    this.setState({ loading: true })
     const city = e.target.elements.city.value;
     const api_call = await fetch(`http://api.geonames.org/searchJSON?q=${city}&maxRows=10&username=weknowit`);
     const data = await api_call.json();
-    this.setState({ loading: false})
+    this.setState({ loading: false })
     console.log(data)
-    // if nothing is put into the form
-    if(!city){
-      this.setState({ error: "Please type in a city to continue"})
+    // if no input is put into the form
+    if (!city) {
+      this.setState({ error: "Please type in a city to continue" })
     }
     // if city does not exist in db
-    else if(data.totalResultsCount === 0){
+    else if (data.totalResultsCount === 0) {
       this.setState({
         ...this.state,
         city: undefined,
@@ -44,36 +41,39 @@ class App extends React.Component {
         error: "There exists no such city in our database, try again"
       })
       this.setCurrentPage("citySearchPage");
-    } else{
+    } else {
       // if city exists in db
       this.setState({
         ...this.state,
         city: data.geonames[0].toponymName,
         country: data.geonames[0].countryName,
-        population: data.geonames[0].population, 
+        population: data.geonames[0].population,
         error: undefined
       })
       this.setCurrentPage("cityPage");
     }
-  
+
   }
-// function to fetch information about desired country from API 
+  // function to fetch information about desired country from API 
   fetchCountry = async (e) => {
     e.preventDefault();
-    this.setState({ loading: true})
+    this.setState({ loading: true })
     const country = e.target.elements.country.value;
     // fetching top 3 cities over 1000 population from chosen country ordered by population
     const api_call = await fetch(`http://api.geonames.org/searchJSON?q=${country}&maxRows=3&cities=cities1000&orderby=population&username=weknowit`);
     const data = await api_call.json();
-    this.setState({ loading: false})
-    if(!country){
-      this.setState({ error: "Please type in a country to continue"})
+    this.setState({ loading: false })
+    // if no input is put into the form
+    if (!country) {
+      this.setState({ error: "Please type in a country to continue" })
     }
-    else if(!(data.geonames === undefined || data.geonames.length === 0)){
-      this.setState({topCities: data.geonames});
+    // if country does not exist in db
+    else if (!(data.geonames === undefined || data.geonames.length === 0)) {
+      this.setState({ topCities: data.geonames });
       this.setCurrentPage("countryPage");
-    } else{
-      this.setState({topCities: []});
+    } else {
+      // if country does not exist in db
+      this.setState({ topCities: [] });
       this.setState({})
       this.setState({
         ...this.state,
@@ -82,52 +82,54 @@ class App extends React.Component {
         error: "There exists no such country in our database, try again"
       })
     }
-      
   }
-  
 
-setCurrentPage = (name) => {
-  this.setState({
-    currentPage: name
-  })
-}
-
-setCityAndPage = (cityNumber) =>{
-  this.setState({
-    ...this.state,
-    city: this.state.topCities[cityNumber].name,
-    country: this.state.topCities[cityNumber].countryName,
-    population: this.state.topCities[cityNumber].population, 
-    error: undefined
-  })
-  this.setCurrentPage("cityPage");
-}
+  setCurrentPage = (name) => {
+    this.setState({
+      currentPage: name
+    })
+  }
+// used from countryPage to switch to cityPage
+  setCityAndPage = (cityNumber) => {
+    this.setState({
+      ...this.state,
+      city: this.state.topCities[cityNumber].name,
+      country: this.state.topCities[cityNumber].countryName,
+      population: this.state.topCities[cityNumber].population,
+      error: undefined
+    })
+    this.setCurrentPage("cityPage");
+  }
 
 
   render() {
     if (this.state.loading) return <Loader />;
-    return(
-      <div> 
-        <h1> City Pop </h1>
-        {this.state.currentPage === "home" && <Home onClickCitySearchBtn ={this.setCurrentPage} onClickCountrySearchBtn = {this.setCurrentPage}/>}
-        {this.state.currentPage === "citySearchPage" && <CitySearch getCity = {this.fetchCity} error = {this.state.error} searchObject = "city" />}
-        {this.state.currentPage === "countrySearchPage" && <CountrySearch getCountry = {this.fetchCountry} error = {this.state.error} searchObject = "country" />}
-        {this.state.currentPage === "cityPage" && <CityPage 
-          city = {this.state.city} 
-          country = {this.state.country} 
-          population = {this.state.population} 
-          error = {this.state.error} />}
-        {this.state.currentPage === "countryPage" && <CountryPage 
-          topCities = {this.state.topCities}
-          error = {this.state.error}
-          setCity = {this.setCityAndPage}
-          />}
-      </div>
+    return (
+      <div>
+        <div className="wrapper">
+          <div className="main">
+            <h1 className="header1" align="center"> CityPop </h1>
+            {this.state.currentPage === "home" && <Home onClickCitySearchBtn={this.setCurrentPage} onClickCountrySearchBtn={this.setCurrentPage} />}
+            {this.state.currentPage === "citySearchPage" && <CitySearch getCity={this.fetchCity} error={this.state.error} searchObject="city" />}
+            {this.state.currentPage === "countrySearchPage" && <CountrySearch getCountry={this.fetchCountry} error={this.state.error} searchObject="country" />}
+            {this.state.currentPage === "cityPage" && <CityPage
+              city={this.state.city}
+              country={this.state.country}
+              population={this.state.population}
+              error={this.state.error} />}
+            {this.state.currentPage === "countryPage" && <CountryPage
+              topCities={this.state.topCities}
+              error={this.state.error}
+              setCity={this.setCityAndPage}
+            />}
+          </div>
+        </div>
+      </div >
     );
   }
-  
 
-  
+
+
 }
 
 export default App; 
