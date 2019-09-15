@@ -22,18 +22,17 @@ class App extends React.Component {
   }
   
 // function to fetch information about desired city from API 
-  getCity = async (e) => {
+  fetchCity = async (e) => {
     e.preventDefault();
     this.setState({ loading: true})
     const city = e.target.elements.city.value;
     const api_call = await fetch(`http://api.geonames.org/searchJSON?q=${city}&maxRows=10&username=weknowit`);
     const data = await api_call.json();
     this.setState({ loading: false})
-    this.setCurrentPage("cityPage");
     console.log(data)
     // if nothing is put into the form
     if(!city){
-      this.setCurrentPage("citySearchPage");
+      this.setState({ error: "Please type in a city to continue"})
     }
     // if city does not exist in db
     else if(data.totalResultsCount === 0){
@@ -54,11 +53,12 @@ class App extends React.Component {
         population: data.geonames[0].population, 
         error: undefined
       })
+      this.setCurrentPage("cityPage");
     }
   
   }
 // function to fetch information about desired country from API 
-  getCountry = async (e) => {
+  fetchCountry = async (e) => {
     e.preventDefault();
     this.setState({ loading: true})
     const country = e.target.elements.country.value;
@@ -66,10 +66,23 @@ class App extends React.Component {
     const api_call = await fetch(`http://api.geonames.org/searchJSON?q=${country}&maxRows=3&cities=cities1000&orderby=population&username=weknowit`);
     const data = await api_call.json();
     this.setState({ loading: false})
-    this.setState({topCities: data.geonames});
-    this.setCurrentPage("countryPage");
-    console.log(data.geonames);
-  
+    if(!country){
+      this.setState({ error: "Please type in a country to continue"})
+    }
+    else if(!(data.geonames === undefined || data.geonames.length === 0)){
+      this.setState({topCities: data.geonames});
+      this.setCurrentPage("countryPage");
+    } else{
+      this.setState({topCities: []});
+      this.setState({})
+      this.setState({
+        ...this.state,
+        loading: false,
+        topCities: [],
+        error: "There exists no such country in our database, try again"
+      })
+    }
+      
   }
   
 
@@ -97,8 +110,8 @@ setCityAndPage = (cityNumber) =>{
       <div> 
         <h1> City Pop </h1>
         {this.state.currentPage === "home" && <Home onClickCitySearchBtn ={this.setCurrentPage} onClickCountrySearchBtn = {this.setCurrentPage}/>}
-        {this.state.currentPage === "citySearchPage" && <CitySearch getCity = {this.getCity} error = {this.state.error} searchObject = "city" />}
-        {this.state.currentPage === "countrySearchPage" && <CountrySearch getCountry = {this.getCountry} searchObject = "country" />}
+        {this.state.currentPage === "citySearchPage" && <CitySearch getCity = {this.fetchCity} error = {this.state.error} searchObject = "city" />}
+        {this.state.currentPage === "countrySearchPage" && <CountrySearch getCountry = {this.fetchCountry} error = {this.state.error} searchObject = "country" />}
         {this.state.currentPage === "cityPage" && <CityPage 
           city = {this.state.city} 
           country = {this.state.country} 

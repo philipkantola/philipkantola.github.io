@@ -10,6 +10,7 @@ class CountrySearch extends React.Component {
         <div>
          SEARCH BY COUNTRY
          <SearchBar getContent = {this.props.getCountry} searchObject = {this.props.searchObject} />
+         {this.props.error && <p> {this.props.error} </p>}
         </div>
       );
     }
