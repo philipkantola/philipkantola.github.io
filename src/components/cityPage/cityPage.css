@@ -12,3 +12,14 @@
 .populationText{
     font-size: 30px;
 }
+
+.newSearch {
+  margin-top: 75px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  border: none;
+  background: none;
+  
+}

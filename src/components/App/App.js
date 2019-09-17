@@ -26,7 +26,6 @@ class App extends React.Component {
     const api_call = await fetch(`http://api.geonames.org/searchJSON?q=${city}&maxRows=10&username=weknowit`);
     const data = await api_call.json();
     this.setCurrentPage(temp);
-    console.log(data)
     // if no input is put into the form
     if (!city) {
       this.setState({ error: "Please type in a city to continue" })
@@ -116,7 +115,8 @@ class App extends React.Component {
               city={this.state.city}
               country={this.state.country}
               population={this.state.population}
-              error={this.state.error} />}
+              error={this.state.error}
+              onSearchAgain = {this.setCurrentPage} />}
             {this.state.currentPage === "countryPage" && <CountryPage
               topCities={this.state.topCities}
               error={this.state.error}
